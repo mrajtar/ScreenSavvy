@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenSavvy", "ScreenSavvy\ScreenSavvy.csproj", "{CFEED5E8-A9F7-43FC-91FB-984314E6EA89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenSavvy", "ScreenSavvy\ScreenSavvy.csproj", "{CFEED5E8-A9F7-43FC-91FB-984314E6EA89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenSavvy.DataAccess", "ScreenSavvy.DataAccess\ScreenSavvy.DataAccess.csproj", "{D7F7FB43-2F69-43E4-83AF-6E5CCA9E0ADA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenSavvy.DataAccess", "ScreenSavvy.DataAccess\ScreenSavvy.DataAccess.csproj", "{D7F7FB43-2F69-43E4-83AF-6E5CCA9E0ADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenSavvy.Models", "ScreenSavvy.Models\ScreenSavvy.Models.csproj", "{1B83D75D-46BA-4F24-8FD6-BDB8BC802374}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenSavvy.Models", "ScreenSavvy.Models\ScreenSavvy.Models.csproj", "{1B83D75D-46BA-4F24-8FD6-BDB8BC802374}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenSavvy.Utility", "ScreenSavvy.Utility\ScreenSavvy.Utility.csproj", "{48FC827A-7819-45D7-AED0-4295FA48C005}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenSavvy.Utility", "ScreenSavvy.Utility\ScreenSavvy.Utility.csproj", "{48FC827A-7819-45D7-AED0-4295FA48C005}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

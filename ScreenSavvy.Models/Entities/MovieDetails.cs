@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ScreenSavvy.Models.Entities
 {
     public class MovieDetails
     {
-        public int Id { get; set; } 
+        [Key]
+        public int Id { get; set; }
+        [Required] 
         public string Title { get; set; }
         public string Director { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public int ReleaseYear { get; set; }
-
         public ICollection<MovieGenre> MovieGenres { get; set; }
-    }
     }
 }

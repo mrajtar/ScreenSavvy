@@ -6,4 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScreenSavvy.DataAccess\ScreenSavvy.DataAccess.csproj" />
+    <ProjectReference Include="..\ScreenSavvy.Models\ScreenSavvy.Models.csproj" />
+  </ItemGroup>
+
 </Project>

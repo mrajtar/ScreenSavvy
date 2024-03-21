@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ScreenSavvy.Models;
+using ScreenSavvy.Models.Entities;
 using System.Diagnostics;
 
 namespace ScreenSavvy.Controllers
