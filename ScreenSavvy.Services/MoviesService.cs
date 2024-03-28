@@ -18,7 +18,7 @@ namespace ScreenSavvy.Services
             _webHostEnvironment = webHostEnvironment;
             _moviesRepository = moviesRepository;
         }
-        public async Task<MovieDetails> GetMoviesAsync(int id)
+        public async Task<MovieDetails> GetMovieAsync(int id)
         {
             var movie = _moviesRepository.GetAsync(m => m.Id == id);
             return await movie;
