@@ -15,17 +15,15 @@ namespace ScreenSavvy.DataAccess.Repository
             this.dbSet = _context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            IQueryable<T> query = dbSet;
-            return query.ToList();
+            return await dbSet.ToListAsync();
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
-            query = query.Where(filter);
-            return query.FirstOrDefault();
+            return await query.Where(filter).FirstOrDefaultAsync();
         }
 
         public async Task AddAsync(T entity)
@@ -43,7 +41,7 @@ namespace ScreenSavvy.DataAccess.Repository
             dbSet.Remove(entity);
         }
 
-        public Task<int> SaveChangesAsync(T entity)
+        public Task<int> SaveChangesAsync()
         {
             return _context.SaveChangesAsync();
         }

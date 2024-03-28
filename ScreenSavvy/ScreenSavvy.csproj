@@ -16,6 +16,11 @@
   <ItemGroup>
     <ProjectReference Include="..\ScreenSavvy.DataAccess\ScreenSavvy.DataAccess.csproj" />
     <ProjectReference Include="..\ScreenSavvy.Models\ScreenSavvy.Models.csproj" />
+    <ProjectReference Include="..\ScreenSavvy.Services\ScreenSavvy.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\movieposters\" />
   </ItemGroup>
 
 </Project>

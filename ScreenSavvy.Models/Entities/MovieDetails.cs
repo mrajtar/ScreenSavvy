@@ -13,6 +13,7 @@ namespace ScreenSavvy.Models.Entities
         public string Description { get; set; }
         [Required]
         public int ReleaseYear { get; set; }
+        public string ImagePath { get; set; }
         public ICollection<MovieGenre> MovieGenres { get; set; }
     }
 }
