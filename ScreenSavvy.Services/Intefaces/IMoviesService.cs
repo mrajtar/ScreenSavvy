@@ -8,7 +8,7 @@ namespace ScreenSavvy.Services.Intefaces
         Task<IEnumerable<MovieDetails>> GetAllMoviesAsync();
         Task<MovieDetails> GetMoviesAsync(int id);
         Task AddMovieAsync(MovieDetails movie, IFormFile? file);
-        Task UpdateMovieAsync(MovieDetails movie);
+        Task UpdateMovieAsync(MovieDetails movie, IFormFile? file);
         Task DeleteMovieAsync(int id);
     }
 }
