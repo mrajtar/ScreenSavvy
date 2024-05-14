@@ -28,6 +28,7 @@ namespace ScreenSavvy.Controllers
             }
             return View(movie);
         }
+
         public async Task<IActionResult> Create()
         {
             var movieDetailsVM = new MovieDetailsVM
@@ -36,16 +37,13 @@ namespace ScreenSavvy.Controllers
             };
             return View(movieDetailsVM);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MovieDetailsVM movie, IFormFile? file)
         {
-            if (ModelState.IsValid)
-            {
-                await _moviesService.AddMovieAsync(movie, file);
-                return RedirectToAction("Index", "Home");
-            }
-            return View(movie);
+            await _moviesService.AddMovieAsync(movie, file);
+            return RedirectToAction("Index", "Home");
         }
         public async Task<IActionResult> Edit(int id)
         {

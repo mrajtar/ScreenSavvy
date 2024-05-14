@@ -21,7 +21,6 @@ namespace ScreenSavvy.DataAccess.Data
             modelBuilder.Entity<MovieGenre>()
                 .HasKey(mg => new { mg.MovieId, mg.GenreId });
 
-
             modelBuilder.Entity<Genre>()
                 .HasData(
                 new Genre { Id = 1, Name = "Action" },

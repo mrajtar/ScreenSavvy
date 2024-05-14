@@ -50,7 +50,7 @@ namespace ScreenSavvy.Services
                 var movieDetailsVM = movies.Select(movie => new MovieDetailsVM
                 {
                     MovieDetails = movie
-                });
+                }).ToList();
 
                 return movieDetailsVM;
             }
@@ -77,16 +77,27 @@ namespace ScreenSavvy.Services
                     }
                     movieDetailsVM.MovieDetails.ImagePath = @"\images\movieposters\" + fileName;
                 }
+
+                await _moviesRepository.AddAsync(movieDetailsVM.MovieDetails);
+                await _moviesRepository.SaveChangesAsync();
+
                 var genres = await _genreRepository.GetAllAsync();
+                movieDetailsVM.MovieDetails.MovieGenres = new List<MovieGenre>();
+
                 foreach (var genreId in movieDetailsVM.SelectedGenreIds)
                 {
                     var genre = genres.FirstOrDefault(g => g.Id == genreId);
                     if (genre != null)
                     {
-                        movieDetailsVM.MovieDetails.MovieGenres.Add(new MovieGenre { Genre = genre });
+                        movieDetailsVM.MovieDetails.MovieGenres.Add(new MovieGenre
+                        {
+                            MovieId = movieDetailsVM.MovieDetails.Id,
+                            GenreId = genre.Id
+                        });
                     }
                 }
-                await _moviesRepository.AddAsync(movieDetailsVM.MovieDetails);
+
+                _moviesRepository.Update(movieDetailsVM.MovieDetails);
                 await _moviesRepository.SaveChangesAsync();
             }
             catch (Exception ex)
