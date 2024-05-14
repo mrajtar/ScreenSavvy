@@ -8,6 +8,6 @@ namespace ScreenSavvy.Models.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public ICollection<MovieGenre> Genres { get; set; }
+        public ICollection<MovieGenre> MovieGenres { get; set; }
     }
 }

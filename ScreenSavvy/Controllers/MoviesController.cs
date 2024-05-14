@@ -1,14 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ScreenSavvy.Models.Entities;
-using ScreenSavvy.Services.Intefaces;
+using Microsoft.EntityFrameworkCore;
+using ScreenSavvy.DataAccess.Data;
+using ScreenSavvy.Models.ViewModels;
+using ScreenSavvy.Services.Interfaces;
 
 namespace ScreenSavvy.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly IMoviesService _moviesService;
-        public MoviesController(IMoviesService moviesService)
+        private readonly ApplicationDbContext _context;
+        public MoviesController(IMoviesService moviesService, ApplicationDbContext context)
         {
+            _context = context;
             _moviesService = moviesService;
         }
         public async Task<IActionResult> Index()
@@ -24,20 +28,24 @@ namespace ScreenSavvy.Controllers
             }
             return View(movie);
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var movieDetailsVM = new MovieDetailsVM
+            {
+                Genres = await _context.Genres.ToListAsync()
+            };
+            return View(movieDetailsVM);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MovieDetails movieDetails, IFormFile? file)
+        public async Task<IActionResult> Create(MovieDetailsVM movie, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                await _moviesService.AddMovieAsync(movieDetails, file);
-                return RedirectToAction(nameof(Index));
+                await _moviesService.AddMovieAsync(movie, file);
+                return RedirectToAction("Index", "Home");
             }
-            return View(movieDetails);
+            return View(movie);
         }
         public async Task<IActionResult> Edit(int id)
         {
@@ -51,27 +59,27 @@ namespace ScreenSavvy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, MovieDetails movieDetails, IFormFile? file)
+        public async Task<IActionResult> Edit(int id, MovieDetailsVM movie, IFormFile? file)
         {
-            if (id != movieDetails.Id)
+            if (id != movie.MovieDetails.Id)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                await _moviesService.UpdateMovieAsync(movieDetails, file);
+                await _moviesService.UpdateMovieAsync(movie, file);
                 return RedirectToAction(nameof(Index));
             }
-            return View(movieDetails);
+            return View(movie);
         }
         public async Task<IActionResult> Delete(int id)
         {
-            var movieDetails = await _moviesService.GetMovieAsync(id);
-            if (movieDetails == null)
+            var movie = await _moviesService.GetMovieAsync(id);
+            if (movie == null)
             {
                 return NotFound();
             }
-            return View(movieDetails);
+            return View(movie);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

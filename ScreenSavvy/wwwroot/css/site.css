@@ -1,22 +1,58 @@
-html {
-  font-size: 14px;
+.main-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+}
+.left-hand-side-container {
+    width: 12%;
+    height: 100%;
+    background-color: #1C1C1C;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    position: fixed;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.right-panel {
+    flex-grow: 1;
+    background-color: #232323;
 }
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.flow-home, .flow-admin {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    padding: 15px 20px;
+    margin: 1px 0;
+    flex-direction: row;
 }
-
-html {
-  position: relative;
-  min-height: 100%;
+.flow-home a, .flow-admin a {
+    color: #bfbfbf !important;
+    text-decoration: none;
 }
-
-body {
-  margin-bottom: 60px;
+.add-movie-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+form {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-group{
+    color: lightgrey;
+}
+.movies-container {
+    
 }

@@ -1,8 +1,15 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<MovieDetailsVM>
+@{
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="movies-container">
+      @* @foreach (var item in Model)
+        {
+         <div class="heading">
+          <h2>@item.MovieDetails.Title</h2>
+         </div>
+        } *@
+    </div>
 </div>

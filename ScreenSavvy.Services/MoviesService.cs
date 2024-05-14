@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
+using ScreenSavvy.DataAccess.Data;
 using ScreenSavvy.DataAccess.Repository.IRepository;
 using ScreenSavvy.Models.Entities;
+using ScreenSavvy.Models.ViewModels;
 using ScreenSavvy.Services.Exceptions;
-using ScreenSavvy.Services.Intefaces;
+using ScreenSavvy.Services.Interfaces;
 
 namespace ScreenSavvy.Services
 {
@@ -15,19 +14,26 @@ namespace ScreenSavvy.Services
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMoviesRepository _moviesRepository;
+        private readonly IGenreRepository _genreRepository;
         private readonly ILogger<MoviesService> _logger;
-        public MoviesService(IMoviesRepository moviesRepository, IWebHostEnvironment webHostEnvironment, ILogger<MoviesService> logger)
+        public MoviesService(IMoviesRepository moviesRepository, IWebHostEnvironment webHostEnvironment, ILogger<MoviesService> logger, IGenreRepository genreRepository)
         {
             _webHostEnvironment = webHostEnvironment;
             _moviesRepository = moviesRepository;
             _logger = logger;
+            _genreRepository = genreRepository;
         }
-        public async Task<MovieDetails> GetMovieAsync(int id)
+        public async Task<MovieDetailsVM> GetMovieAsync(int id)
         {
             try
             {
-                var movie = _moviesRepository.GetAsync(m => m.Id == id);
-                return await movie;
+                var movie = await _moviesRepository.GetAsync(m => m.Id == id, includeProperties: "MovieGenres");
+                var movieDetailsVM = new MovieDetailsVM
+                {
+                    MovieDetails = movie
+                };
+
+                return movieDetailsVM;
             }
             catch (Exception ex)
             {
@@ -36,11 +42,17 @@ namespace ScreenSavvy.Services
             }
         }
 
-        public async Task<IEnumerable<MovieDetails>> GetAllMoviesAsync()
+        public async Task<IEnumerable<MovieDetailsVM>> GetAllMoviesAsync()
         {
             try
             {
-                return await _moviesRepository.GetAllAsync();
+                var movies = await _moviesRepository.GetAllAsync(includeProperties: "MovieGenres");
+                var movieDetailsVM = movies.Select(movie => new MovieDetailsVM
+                {
+                    MovieDetails = movie
+                });
+
+                return movieDetailsVM;
             }
             catch (Exception ex)
             {
@@ -49,7 +61,7 @@ namespace ScreenSavvy.Services
             }
         }
 
-        public async Task AddMovieAsync(MovieDetails movie, IFormFile? file)
+        public async Task AddMovieAsync(MovieDetailsVM movieDetailsVM, IFormFile? file)
         {
             try
             {
@@ -63,9 +75,18 @@ namespace ScreenSavvy.Services
                     {
                         await file.CopyToAsync(fileStream);
                     }
-                    movie.ImagePath = @"\images\movieposters\" + fileName;
+                    movieDetailsVM.MovieDetails.ImagePath = @"\images\movieposters\" + fileName;
                 }
-                await _moviesRepository.AddAsync(movie);
+                var genres = await _genreRepository.GetAllAsync();
+                foreach (var genreId in movieDetailsVM.SelectedGenreIds)
+                {
+                    var genre = genres.FirstOrDefault(g => g.Id == genreId);
+                    if (genre != null)
+                    {
+                        movieDetailsVM.MovieDetails.MovieGenres.Add(new MovieGenre { Genre = genre });
+                    }
+                }
+                await _moviesRepository.AddAsync(movieDetailsVM.MovieDetails);
                 await _moviesRepository.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -75,7 +96,7 @@ namespace ScreenSavvy.Services
             }
         }
 
-        public async Task UpdateMovieAsync(MovieDetails movie, IFormFile? file)
+        public async Task UpdateMovieAsync(MovieDetailsVM movieDetailsVM, IFormFile? file)
         {
             try
             {
@@ -85,14 +106,14 @@ namespace ScreenSavvy.Services
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string moviePosterPath = Path.Combine(wwwRootPath, @"images\movieposters");
 
-                    if (!string.IsNullOrEmpty(movie.ImagePath))
+                    if (!string.IsNullOrEmpty(movieDetailsVM.MovieDetails.ImagePath))
                     {
                         var oldImagePath =
-                            Path.Combine(wwwRootPath, movie.ImagePath.TrimStart('\\'));
+                            Path.Combine(wwwRootPath, movieDetailsVM.MovieDetails.ImagePath.TrimStart('\\'));
 
-                        if (System.IO.File.Exists(oldImagePath))
+                        if (File.Exists(oldImagePath))
                         {
-                            System.IO.File.Delete(oldImagePath);
+                            File.Delete(oldImagePath);
                         }
                     }
 
@@ -100,15 +121,16 @@ namespace ScreenSavvy.Services
                     {
                         await file.CopyToAsync(fileStream);
                     }
-                    movie.ImagePath = @"\images\movieposters\" + fileName;
+                    movieDetailsVM.MovieDetails.ImagePath = @"\images\movieposters\" + fileName;
                 }
-                _moviesRepository.Update(movie);
+                
+                _moviesRepository.Update(movieDetailsVM.MovieDetails);
                 await _moviesRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error updating movie with ID {movie.Id}.");
-                throw new ServiceException($"Error updating movie with ID {movie.Id}.", ex);
+                _logger.LogError(ex, $"Error updating movie with ID {movieDetailsVM.MovieDetails.Id}.");
+                throw new ServiceException($"Error updating movie with ID {movieDetailsVM.MovieDetails.Id}.", ex);
             }
         }
 
@@ -121,9 +143,9 @@ namespace ScreenSavvy.Services
                 {
                     var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
                         movie.ImagePath.TrimStart('\\'));
-                    if (System.IO.File.Exists(oldImagePath))
+                    if (File.Exists(oldImagePath))
                     {
-                        System.IO.File.Delete(oldImagePath);
+                        File.Delete(oldImagePath);
                     }
                     _moviesRepository.Delete(movie);
                     await _moviesRepository.SaveChangesAsync();

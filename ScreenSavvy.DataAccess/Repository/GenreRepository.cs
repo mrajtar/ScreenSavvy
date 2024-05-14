@@ -4,11 +4,11 @@ using ScreenSavvy.Models.Entities;
 
 namespace ScreenSavvy.DataAccess.Repository
 {
-    public class MoviesRepository : Repository<MovieDetails>, IMoviesRepository
+    public class GenreRepository : Repository<Genre>, IGenreRepository
     {
-        public MoviesRepository(ApplicationDbContext context) : base(context)
+        public GenreRepository(ApplicationDbContext context) : base(context)
         {
-            
+
         }
     }
 }

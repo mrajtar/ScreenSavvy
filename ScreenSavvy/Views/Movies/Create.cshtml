@@ -1,0 +1,59 @@
+﻿@model MovieDetailsVM
+
+<div class="add-movie-container">
+    <form method="post" enctype="multipart/form-data">
+        <input asp-for="MovieDetails.Id" hidden />
+        <input asp-for="MovieDetails.ImagePath" hidden /> 
+        <div class="row">
+            <div class="form-floating py-2 col-12">
+            <input asp-for="MovieDetails.Title" />
+            <label asp-for="MovieDetails.Title" class="ms-2"></label>
+            <span asp-validation-for="MovieDetails.Title" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+            <label asp-for="MovieDetails.Description" class="ms-2 text-muted"></label>
+                <textarea asp-for="MovieDetails.Description" class="form-control border-0 shadow"></textarea>
+            </div>
+            <div class="form-floating py-2 col-12">
+            <input asp-for="MovieDetails.ReleaseYear" />
+            <label asp-for="MovieDetails.ReleaseYear" class="ms-2"></label>
+            <span asp-validation-for="MovieDetails.ReleaseYear" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+            <input asp-for="MovieDetails.Director" />
+            <label asp-for="MovieDetails.Director" ></label>
+            <span asp-validation-for="MovieDetails.Director" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedGenreIds">Genres</label>
+                @foreach (var genre in Model.Genres)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="SelectedGenreIds" value="@genre.Id"
+                            @(Model.SelectedGenreIds.Contains(genre.Id) ? "checked" : "")>
+                        <label class="form-check-label" asp-for="@genre.Name">@genre.Name</label>
+                    </div>
+                }
+                <span asp-validation-for="SelectedGenreIds" class="text-danger"></span>
+            </div>
+            <div class="form-floating py-2 col-12">
+                <input type="file" name="file" class="form-control border-0 shadow" />
+                <label asp-for="MovieDetails.ImagePath" class="ms-2"></label>
+            </div>
+            <div class="row pt-2">
+                <button type="submit" class="btn btn-primary form-control">Create</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Movies" asp-action="Index" class="btn btn-outline-primary border  form-control">
+                Back to homepage
+                </a>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+@{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ScreenSavvy.DataAccess.Data;
 using ScreenSavvy.DataAccess.Repository;
 using ScreenSavvy.DataAccess.Repository.IRepository;
-using ScreenSavvy.Services.Intefaces;
+using ScreenSavvy.Services.Interfaces;
 using ScreenSavvy.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +13,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
 builder.Services.AddScoped<IMoviesService, MoviesService>();
-
+builder.Services.AddScoped<IGenreService, GenresService>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 
 var app = builder.Build();

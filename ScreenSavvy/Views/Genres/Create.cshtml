@@ -1,0 +1,22 @@
+﻿@model Genre
+
+<div class="add-genre-container">
+    <form method="post">
+    <input asp-for="Id" hidden />
+        <div class="row">
+            <div class="form-floating py-2 col-12">
+                <input asp-for="Name" />
+                <label asp-for="Name" class="ms-2"></label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            </div>
+
+<div class="row pt-2">
+    <button type="submit" class="btn btn-primary form-control">Create</button>
+</div>
+    </form>
+</div>
+  
+@{
+    <partial name="_ValidationScriptsPartial" />
+}
